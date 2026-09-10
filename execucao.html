@@ -140,6 +140,16 @@
     <div class="checklist-card fatores-list" style="max-width:100%;"><div data-list-fatores></div></div>
   </section>
 
+  <section id="matriz">
+    <div class="section-head"><h2>Matriz por produto</h2><span class="section-tag">Bloco 4 · 16 produtos</span></div>
+    <div class="checklist-card fatores-list" style="max-width:100%;"><div data-list-matriz></div></div>
+  </section>
+
+  <section id="cronograma">
+    <div class="section-head"><h2>Cronograma do ciclo</h2><span class="section-tag">Bloco 5</span></div>
+    <div class="checklist-card fatores-list" style="max-width:100%;"><div data-list-cronograma></div></div>
+  </section>
+
   <footer>
     As marcações ficam registradas numa planilha privada, organizada por dia — ninguém além da Chayeni
     vê o histórico completo de quem executou o quê. Documento de apoio ao ciclo orçamentário 2027 · Pricing · PJBank.
@@ -194,7 +204,30 @@
     {id:"f3", bloco:"Fatores de justificativa", subgrupo:"Inflação de custos", texto:"Levantar IPCA/IGPM acumulado e custos operacionais"},
     {id:"f4", bloco:"Fatores de justificativa", subgrupo:"Valor entregue", texto:"Listar funcionalidades/integrações lançadas desde o último reajuste"},
     {id:"f5", bloco:"Fatores de justificativa", subgrupo:"Posição competitiva", texto:"Mapear elasticidade por vertical frente à concorrência"},
-    {id:"f6", bloco:"Fatores de justificativa", subgrupo:"Saúde da carteira", texto:"Levantar churn, downsell e inadimplência recentes por produto"}
+    {id:"f6", bloco:"Fatores de justificativa", subgrupo:"Saúde da carteira", texto:"Levantar churn, downsell e inadimplência recentes por produto"},
+
+    {id:"mx-1", bloco:"Matriz por produto", subgrupo:"Superlógica Condomínios · Condomínios", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-2", bloco:"Matriz por produto", subgrupo:"ERP · Imobiliárias", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-3", bloco:"Matriz por produto", subgrupo:"CRM · Imobiliárias", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-4", bloco:"Matriz por produto", subgrupo:"Assinaturas · PJBank", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-5", bloco:"Matriz por produto", subgrupo:"Paybox · PJBank", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-6", bloco:"Matriz por produto", subgrupo:"Boletos · Cobrança", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-7", bloco:"Matriz por produto", subgrupo:"CRM Cobrança · Cobrança", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-8", bloco:"Matriz por produto", subgrupo:"Condomob · Condomínios", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-9", bloco:"Matriz por produto", subgrupo:"Atende Condomínios · Condomínios", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-10", bloco:"Matriz por produto", subgrupo:"Assistente Digital Atende · Condomínios", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-11", bloco:"Matriz por produto", subgrupo:"Portaria · Condomínios", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-12", bloco:"Matriz por produto", subgrupo:"Folha · a confirmar", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-13", bloco:"Matriz por produto", subgrupo:"Educacional · Educacional", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-14", bloco:"Matriz por produto", subgrupo:"Hub · a confirmar", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-15", bloco:"Matriz por produto", subgrupo:"Owli · a confirmar", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+    {id:"mx-16", bloco:"Matriz por produto", subgrupo:"AHREAS · a confirmar", texto:"Validar posicionamento, fatores aplicáveis e % de reajuste 2027 na matriz"},
+
+    {id:"cr-1", bloco:"Cronograma", subgrupo:"Set 2026 — Levantamento de dados e benchmark", texto:"Concluir coleta dos blocos de aquisição e reajuste, apuração da base elegível e leitura de câmbio/inflação"},
+    {id:"cr-2", bloco:"Cronograma", subgrupo:"Out 2026 — Simulação de percentuais por produto", texto:"Cruzar fatores de justificativa com a matriz por produto e rodar primeira simulação com o Financeiro"},
+    {id:"cr-3", bloco:"Cronograma", subgrupo:"Nov 2026 — Validação com Jurídico, Financeiro e Comercial", texto:"Confirmar efeito da Reforma Tributária, meta de margem por BU e teto de desconto"},
+    {id:"cr-4", bloco:"Cronograma", subgrupo:"Dez 2026 — Aprovação final e comunicação", texto:"Fechar percentuais e entregar formalmente ao Planejamento Comercial"},
+    {id:"cr-5", bloco:"Cronograma", subgrupo:"Jan 2027 — Início da aplicação", texto:"Disparar reajustes por mês de renovação e acompanhar churn/inadimplência pós-aplicação"}
   ];
 
   function todaySP(){
@@ -265,8 +298,7 @@
     });
   });
 
-  var fatoresList = document.querySelector("#fatores [data-list-fatores]");
-  ITEMS.filter(function(it){ return it.bloco === "Fatores de justificativa"; }).forEach(function(it){
+  function makeBoldDescRow(it){
     var row = document.createElement("div");
     row.className = "check-item";
     var cb = document.createElement("input");
@@ -288,7 +320,22 @@
       updatePendingCount();
     });
     row.appendChild(cb); row.appendChild(label);
-    fatoresList.appendChild(row);
+    return row;
+  }
+
+  var fatoresList = document.querySelector("#fatores [data-list-fatores]");
+  ITEMS.filter(function(it){ return it.bloco === "Fatores de justificativa"; }).forEach(function(it){
+    fatoresList.appendChild(makeBoldDescRow(it));
+  });
+
+  var matrizList = document.querySelector("#matriz [data-list-matriz]");
+  ITEMS.filter(function(it){ return it.bloco === "Matriz por produto"; }).forEach(function(it){
+    matrizList.appendChild(makeBoldDescRow(it));
+  });
+
+  var cronogramaList = document.querySelector("#cronograma [data-list-cronograma]");
+  ITEMS.filter(function(it){ return it.bloco === "Cronograma"; }).forEach(function(it){
+    cronogramaList.appendChild(makeBoldDescRow(it));
   });
 
   // ---- contagem de pendentes e envio ----
