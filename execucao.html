@@ -1,0 +1,345 @@
+<title>Execução Diária Pricing 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f2f3ee; --surface:#ffffff; --surface-alt:#e8e9e2;
+    --ink:#141d1a; --ink-soft:#48544c; --ink-faint:#7c877e;
+    --primary:#163832; --primary-ink:#eef4f1;
+    --accent:#a9762f; --accent-strong:#8a5f22; --accent-soft:#ecdfc3;
+    --border:#d7d8ce; --good:#3f7d5c; --good-soft:#e1efe6;
+    --warn:#b5601f; --warn-soft:#f4e5d3; --danger:#a23e3e; --danger-soft:#f3e0df;
+    --shadow: 0 1px 2px rgba(20,29,26,.04), 0 8px 24px -12px rgba(20,29,26,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#101512; --surface:#171f1b; --surface-alt:#1e2822;
+      --ink:#e9ece6; --ink-soft:#aab5ac; --ink-faint:#7c877e;
+      --primary:#7fb8a6; --primary-ink:#0e1512;
+      --accent:#d9a857; --accent-strong:#eec27e; --accent-soft:#372c17;
+      --border:#2b352f; --good:#6fbe93; --good-soft:#193226;
+      --warn:#e08a4f; --warn-soft:#33220f; --danger:#d97070; --danger-soft:#331d1c;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#101512; --surface:#171f1b; --surface-alt:#1e2822;
+    --ink:#e9ece6; --ink-soft:#aab5ac; --ink-faint:#7c877e;
+    --primary:#7fb8a6; --primary-ink:#0e1512;
+    --accent:#d9a857; --accent-strong:#eec27e; --accent-soft:#372c17;
+    --border:#2b352f; --good:#6fbe93; --good-soft:#193226;
+    --warn:#e08a4f; --warn-soft:#33220f; --danger:#d97070; --danger-soft:#331d1c;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;padding:0 20px;}
+  .wrap{max-width:900px;margin:0 auto;padding-block:32px 140px;}
+  h1,h2{font-family:"Fraunces",Georgia,serif;font-weight:600;letter-spacing:-.01em;text-wrap:balance;}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;}
+
+  .masthead{background:var(--primary);color:var(--primary-ink);border-radius:18px;padding:28px clamp(20px,4vw,36px);box-shadow:var(--shadow);margin-bottom:24px;}
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;opacity:.72;margin:0 0 10px;}
+  .masthead h1{font-size:clamp(24px,4vw,32px);margin:0 0 10px;color:var(--primary-ink);}
+  .masthead p{margin:0;font-size:14.5px;line-height:1.6;opacity:.88;max-width:60ch;}
+
+  .id-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);margin-bottom:26px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;}
+  .id-field label{display:block;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px;}
+  .id-field input{font-family:"IBM Plex Sans";font-size:15px;border:1px solid var(--border);border-radius:8px;padding:9px 12px;background:var(--bg);color:var(--ink);min-width:220px;}
+  .id-field input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .id-date{margin-left:auto;text-align:right;}
+  .id-date .day{font-family:"IBM Plex Mono";font-size:18px;font-weight:600;color:var(--accent-strong);}
+  .id-date .label{font-size:11px;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;}
+
+  .config-warning{background:var(--danger-soft);color:var(--danger);border-radius:10px;padding:12px 16px;font-size:13px;line-height:1.6;margin-bottom:22px;}
+
+  section{margin-bottom:34px;}
+  .section-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px;}
+  .section-head h2{font-size:19px;margin:0;}
+  .section-tag{font-family:"IBM Plex Mono";font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);}
+
+  .block-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  @media (max-width:760px){.block-grid{grid-template-columns:1fr;}}
+  .checklist-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px 6px;box-shadow:var(--shadow);}
+  .checklist-card h3{font-size:12px;letter-spacing:.09em;text-transform:uppercase;font-weight:600;margin:0 0 4px;color:var(--accent-strong);}
+  .check-item{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--border);font-size:13.5px;line-height:1.5;}
+  .checklist-card .check-item:first-of-type{border-top:none;}
+  .check-item input[type="checkbox"]{margin-top:3px;width:16px;height:16px;flex:none;accent-color:var(--accent);cursor:pointer;}
+  .check-item label{cursor:pointer;color:var(--ink);flex:1;}
+  .sent-tag{display:inline-block;margin-left:6px;font-family:"IBM Plex Mono";font-size:10.5px;color:var(--good);white-space:nowrap;}
+  .check-item input:checked ~ label{color:var(--ink-soft);}
+
+  .fatores-list .check-item label b{display:block;font-weight:600;color:var(--ink);}
+  .fatores-list .check-item label span.desc{display:block;color:var(--ink-soft);font-size:12.5px;margin-top:2px;}
+
+  .submit-bar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--border);box-shadow:0 -8px 24px -12px rgba(20,29,26,.25);padding:14px 20px;display:flex;justify-content:center;z-index:10;}
+  .submit-inner{max-width:900px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .submit-status{font-size:13px;color:var(--ink-soft);}
+  .submit-status b{color:var(--ink);}
+  button.submit-btn{font-family:"IBM Plex Sans";font-weight:600;font-size:14.5px;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 22px;cursor:pointer;}
+  button.submit-btn:disabled{background:var(--surface-alt);color:var(--ink-faint);cursor:default;}
+  button.submit-btn:not(:disabled):hover{background:var(--accent-strong);}
+  .toast{font-size:12.5px;color:var(--good);font-family:"IBM Plex Mono";}
+  .toast.err{color:var(--danger);}
+
+  footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--border);font-size:12px;color:var(--ink-faint);line-height:1.6;}
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">Ciclo de planejamento 2027 · execução individual</p>
+    <h1>O que você já executou hoje</h1>
+    <p>Marque os itens do checklist que você pessoalmente levantou, consultou ou entregou hoje. Cada marcação é registrada com seu nome e horário — só a Chayeni tem acesso ao histórico consolidado por dia.</p>
+  </header>
+
+  <div class="id-card">
+    <div class="id-field">
+      <label for="nome-input">Seu nome</label>
+      <input id="nome-input" type="text" placeholder="ex: Ana Souza" autocomplete="name">
+    </div>
+    <div class="id-date">
+      <div class="day mono" id="today-label">—</div>
+      <div class="label">registro do dia</div>
+    </div>
+  </div>
+
+  <div class="config-warning" id="config-warning" hidden>
+    ⚠️ Este arquivo ainda não está configurado: falta colar a URL do Apps Script na constante
+    <code>ENDPOINT_URL</code> no topo do <code>&lt;script&gt;</code>, no final do arquivo. Sem isso as
+    marcações não são enviadas a lugar nenhum (ver <code>Code.gs</code> para o passo a passo de implantação).
+  </div>
+
+  <section id="aquisicao">
+    <div class="section-head"><h2>Preços de aquisição</h2><span class="section-tag">Bloco 1</span></div>
+    <div class="block-grid">
+      <div class="checklist-card"><h3>Ver</h3><div data-list></div></div>
+      <div class="checklist-card"><h3>Consultar</h3><div data-list></div></div>
+      <div class="checklist-card"><h3>Entregar</h3><div data-list></div></div>
+    </div>
+  </section>
+
+  <section id="reajuste">
+    <div class="section-head"><h2>Reajustes 2027</h2><span class="section-tag">Bloco 2</span></div>
+    <div class="block-grid">
+      <div class="checklist-card"><h3>Ver</h3><div data-list></div></div>
+      <div class="checklist-card"><h3>Consultar</h3><div data-list></div></div>
+      <div class="checklist-card"><h3>Entregar</h3><div data-list></div></div>
+    </div>
+  </section>
+
+  <section id="fatores">
+    <div class="section-head"><h2>Fatores de justificativa</h2><span class="section-tag">Bloco 3</span></div>
+    <div class="checklist-card fatores-list" style="max-width:100%;"><div data-list-fatores></div></div>
+  </section>
+
+  <footer>
+    As marcações ficam registradas numa planilha privada, organizada por dia — ninguém além da Chayeni
+    vê o histórico completo de quem executou o quê. Documento de apoio ao ciclo orçamentário 2027 · Pricing · PJBank.
+  </footer>
+</div>
+
+<div class="submit-bar">
+  <div class="submit-inner">
+    <span class="submit-status" id="submit-status"><b id="pending-count">0</b> alteração(ões) pendente(s) de registrar</span>
+    <span style="display:flex;align-items:center;gap:14px;">
+      <span class="toast" id="toast"></span>
+      <button class="submit-btn" id="submit-btn" disabled>Registrar execução de hoje</button>
+    </span>
+  </div>
+</div>
+
+<script>
+(function(){
+  // ---------------------------------------------------------------------
+  // Cole aqui a URL do Apps Script implantado (termina em /exec).
+  // Ver Code.gs para o passo a passo de implantação.
+  // ---------------------------------------------------------------------
+  var ENDPOINT_URL = "";
+
+  var ITEMS = [
+    {id:"aq-v1", bloco:"Preços de aquisição", subgrupo:"Ver", texto:"Preço-lista vigente por produto e plano — 16 tabelas já levantadas"},
+    {id:"aq-v2", bloco:"Preços de aquisição", subgrupo:"Ver", texto:"Faixas de desconto praticadas nas aquisições dos últimos 12 meses, por canal"},
+    {id:"aq-v3", bloco:"Preços de aquisição", subgrupo:"Ver", texto:"Ticket médio de entrada por produto e por porte/vertical de cliente"},
+    {id:"aq-v4", bloco:"Preços de aquisição", subgrupo:"Ver", texto:"Taxa de conversão de propostas por faixa de preço e por vendedor/canal"},
+    {id:"aq-c1", bloco:"Preços de aquisição", subgrupo:"Consultar", texto:"Pricing Intelligence Hub (BigQuery) — receita, Elite e descontos por BU"},
+    {id:"aq-c2", bloco:"Preços de aquisição", subgrupo:"Consultar", texto:"Comercial/VC — objeções de preço recorrentes em campo, por vertical"},
+    {id:"aq-c3", bloco:"Preços de aquisição", subgrupo:"Consultar", texto:"Financeiro — margem de contribuição por produto na aquisição"},
+    {id:"aq-c4", bloco:"Preços de aquisição", subgrupo:"Consultar", texto:"Benchmark de mercado — cruzar concorrentes de Condomínios contra a tabela vigente por plano"},
+    {id:"aq-e1", bloco:"Preços de aquisição", subgrupo:"Entregar", texto:"Tabela preço-lista atual × proposto, por produto e plano"},
+    {id:"aq-e2", bloco:"Preços de aquisição", subgrupo:"Entregar", texto:"Matriz de posicionamento competitivo por vertical"},
+    {id:"aq-e3", bloco:"Preços de aquisição", subgrupo:"Entregar", texto:"Recomendação de teto de desconto por canal para 2027"},
+
+    {id:"rj-v1", bloco:"Reajustes 2027", subgrupo:"Ver", texto:"Reajuste aplicado por produto nos últimos 2–3 ciclos"},
+    {id:"rj-v2", bloco:"Reajustes 2027", subgrupo:"Ver", texto:"Base elegível a reajuste por mês de renovação (lógica Pro Rata)"},
+    {id:"rj-v3", bloco:"Reajustes 2027", subgrupo:"Ver", texto:"Churn e downsell associados aos últimos reajustes aplicados"},
+    {id:"rj-v4", bloco:"Reajustes 2027", subgrupo:"Ver", texto:"Inadimplência por faixa de reajuste aplicada"},
+    {id:"rj-c1", bloco:"Reajustes 2027", subgrupo:"Consultar", texto:"Câmbio (USD/BRL) e projeção para 2027"},
+    {id:"rj-c2", bloco:"Reajustes 2027", subgrupo:"Consultar", texto:"Jurídico/Fiscal — cronograma e efeito líquido da Reforma Tributária em 2027"},
+    {id:"rj-c3", bloco:"Reajustes 2027", subgrupo:"Consultar", texto:"Financeiro — meta de margem/EBITDA por BU para 2027"},
+    {id:"rj-c4", bloco:"Reajustes 2027", subgrupo:"Consultar", texto:"Sucesso do Cliente — contas-chave com risco de churn sensível a preço"},
+    {id:"rj-e1", bloco:"Reajustes 2027", subgrupo:"Entregar", texto:"% de reajuste proposto por produto/vertical, com memória de cálculo"},
+    {id:"rj-e2", bloco:"Reajustes 2027", subgrupo:"Entregar", texto:"Calendário de aplicação por mês de renovação"},
+    {id:"rj-e3", bloco:"Reajustes 2027", subgrupo:"Entregar", texto:"Playbook de exceção/negociação para contas estratégicas"},
+
+    {id:"f1", bloco:"Fatores de justificativa", subgrupo:"Câmbio (USD/BRL)", texto:"Levantar peso de custos dolarizados na operação"},
+    {id:"f2", bloco:"Fatores de justificativa", subgrupo:"Reforma Tributária", texto:"Confirmar com Jurídico/Fiscal cronograma e alíquotas da CBS/IS para 2027"},
+    {id:"f3", bloco:"Fatores de justificativa", subgrupo:"Inflação de custos", texto:"Levantar IPCA/IGPM acumulado e custos operacionais"},
+    {id:"f4", bloco:"Fatores de justificativa", subgrupo:"Valor entregue", texto:"Listar funcionalidades/integrações lançadas desde o último reajuste"},
+    {id:"f5", bloco:"Fatores de justificativa", subgrupo:"Posição competitiva", texto:"Mapear elasticidade por vertical frente à concorrência"},
+    {id:"f6", bloco:"Fatores de justificativa", subgrupo:"Saúde da carteira", texto:"Levantar churn, downsell e inadimplência recentes por produto"}
+  ];
+
+  function todaySP(){
+    var parts = new Intl.DateTimeFormat("en-CA", {timeZone:"America/Sao_Paulo", year:"numeric", month:"2-digit", day:"2-digit"}).formatToParts(new Date());
+    var map = {}; parts.forEach(function(p){ map[p.type] = p.value; });
+    return map.year + "-" + map.month + "-" + map.day;
+  }
+  function nowSP(){
+    return new Intl.DateTimeFormat("pt-BR", {timeZone:"America/Sao_Paulo", hour:"2-digit", minute:"2-digit", second:"2-digit"}).format(new Date());
+  }
+  function todayLabelPt(){
+    return new Intl.DateTimeFormat("pt-BR", {timeZone:"America/Sao_Paulo", day:"2-digit", month:"2-digit", year:"numeric"}).format(new Date());
+  }
+
+  var today = todaySP();
+  document.getElementById("today-label").textContent = todayLabelPt();
+  if(!ENDPOINT_URL) document.getElementById("config-warning").hidden = false;
+
+  // ---- nome (lembrado neste navegador) ----
+  var nomeInput = document.getElementById("nome-input");
+  try{ nomeInput.value = localStorage.getItem("exec2027-nome") || ""; }catch(e){}
+  nomeInput.addEventListener("input", function(){
+    try{ localStorage.setItem("exec2027-nome", nomeInput.value); }catch(e){}
+  });
+
+  // ---- estado local: o que já foi checado e o que já foi enviado hoje ----
+  var STATE_KEY = "exec2027-state-" + today;
+  function loadState(){
+    try{ return JSON.parse(localStorage.getItem(STATE_KEY) || "{}"); }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STATE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+  // state[id] = { checked: bool, sentAs: bool|null (último estado já registrado no servidor) }
+  var state = loadState();
+
+  // ---- monta os checklists ----
+  function makeRow(item){
+    var row = document.createElement("div");
+    row.className = "check-item";
+    var cb = document.createElement("input");
+    cb.type = "checkbox"; cb.id = "chk-" + item.id;
+    var s = state[item.id];
+    cb.checked = !!(s && s.checked);
+    var label = document.createElement("label");
+    label.setAttribute("for", cb.id);
+    label.textContent = item.texto;
+    var tag = document.createElement("span");
+    tag.className = "sent-tag"; tag.id = "tag-" + item.id;
+    if(s && s.sentAt) tag.textContent = "✓ registrado " + s.sentAt;
+    cb.addEventListener("change", function(){
+      state[item.id] = state[item.id] || {};
+      state[item.id].checked = cb.checked;
+      saveState(state);
+      updatePendingCount();
+    });
+    row.appendChild(cb); row.appendChild(label); label.appendChild(tag);
+    return row;
+  }
+
+  ["Preços de aquisição", "Reajustes 2027"].forEach(function(bloco){
+    var section = bloco === "Preços de aquisição" ? document.getElementById("aquisicao") : document.getElementById("reajuste");
+    var cards = section.querySelectorAll(".checklist-card [data-list]");
+    var subgrupos = ["Ver", "Consultar", "Entregar"];
+    subgrupos.forEach(function(sub, i){
+      ITEMS.filter(function(it){ return it.bloco === bloco && it.subgrupo === sub; })
+        .forEach(function(it){ cards[i].appendChild(makeRow(it)); });
+    });
+  });
+
+  var fatoresList = document.querySelector("#fatores [data-list-fatores]");
+  ITEMS.filter(function(it){ return it.bloco === "Fatores de justificativa"; }).forEach(function(it){
+    var row = document.createElement("div");
+    row.className = "check-item";
+    var cb = document.createElement("input");
+    cb.type = "checkbox"; cb.id = "chk-" + it.id;
+    var s = state[it.id];
+    cb.checked = !!(s && s.checked);
+    var label = document.createElement("label");
+    label.setAttribute("for", cb.id);
+    label.innerHTML = "<b>" + it.subgrupo + "</b><span class=\"desc\"></span>";
+    label.querySelector(".desc").textContent = it.texto;
+    var tag = document.createElement("span");
+    tag.className = "sent-tag"; tag.id = "tag-" + it.id;
+    if(s && s.sentAt) tag.textContent = "✓ registrado " + s.sentAt;
+    label.appendChild(tag);
+    cb.addEventListener("change", function(){
+      state[it.id] = state[it.id] || {};
+      state[it.id].checked = cb.checked;
+      saveState(state);
+      updatePendingCount();
+    });
+    row.appendChild(cb); row.appendChild(label);
+    fatoresList.appendChild(row);
+  });
+
+  // ---- contagem de pendentes e envio ----
+  function pendingItems(){
+    return ITEMS.filter(function(it){
+      var s = state[it.id];
+      if(!s) return false;
+      var wasSent = (s.sentAs === true) === (s.checked === true) && s.sentAs !== undefined;
+      return !wasSent;
+    });
+  }
+  function updatePendingCount(){
+    var n = pendingItems().length;
+    document.getElementById("pending-count").textContent = n;
+    document.getElementById("submit-btn").disabled = (n === 0) || !ENDPOINT_URL;
+  }
+  updatePendingCount();
+
+  document.getElementById("submit-btn").addEventListener("click", function(){
+    var nome = (nomeInput.value || "").trim();
+    var toast = document.getElementById("toast");
+    if(!nome){
+      toast.textContent = "Preencha seu nome antes de registrar."; toast.className = "toast err";
+      nomeInput.focus();
+      return;
+    }
+    var pend = pendingItems();
+    if(!pend.length || !ENDPOINT_URL) return;
+    var horario = nowSP();
+    var events = pend.map(function(it){
+      return { bloco: it.bloco, subgrupo: it.subgrupo, texto: it.texto,
+        acao: state[it.id].checked ? "marcou" : "desmarcou", horario: horario };
+    });
+    var payload = { date: today, nome: nome, events: events };
+
+    document.getElementById("submit-btn").disabled = true;
+    toast.textContent = "Enviando…"; toast.className = "toast";
+
+    fetch(ENDPOINT_URL, {
+      method: "POST",
+      mode: "no-cors", // Apps Script não faz preflight CORS — envio "e esquece"
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    }).then(function(){
+      pend.forEach(function(it){
+        state[it.id].sentAs = state[it.id].checked;
+        state[it.id].sentAt = horario;
+        var tag = document.getElementById("tag-" + it.id);
+        if(tag) tag.textContent = "✓ registrado " + horario;
+      });
+      saveState(state);
+      updatePendingCount();
+      toast.textContent = "Registrado às " + horario + ".";
+      toast.className = "toast";
+    }).catch(function(){
+      toast.textContent = "Falha ao enviar — tente de novo em instantes.";
+      toast.className = "toast err";
+      document.getElementById("submit-btn").disabled = false;
+    });
+  });
+})();
+</script>
